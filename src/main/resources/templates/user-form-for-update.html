@@ -17,14 +17,13 @@
 
     <p class="h4 mb-4">Save/Update User</p>
 
-    <form action="#" th:action="@{/admin/saveUser}"
+    <form action="#" th:action="@{/admin/updateUser}"
           th:object="${user}" method="POST">
         <!-- Add hidden form field to handle update -->
-        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{id}" th:value="${user.id}"/>
 
         <input type="text" th:field="*{userName}" class="form-control mb-4 col-4" placeholder="login">
-        <div style="color: red" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"> Age error</div>
-
+        <div style="color: red" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"> UserName error</div>
 
         <input type="text" th:field="*{name}" class="form-control mb-4 col-4" placeholder="name">
         <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> Name error</div>
@@ -36,7 +35,7 @@
         <div style="color: red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"> Age error</div>
 
         <input type="password" th:field="*{password}" class="form-control mb-4 col-4" placeholder="password">
-        <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"> password error</div>
+        <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"> Password error</div>
 
         <label for="roles">User roles (multiple select):</label>
         <br/>

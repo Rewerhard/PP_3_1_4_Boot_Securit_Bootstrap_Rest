@@ -17,12 +17,20 @@ import java.util.Set;
 public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name = "role_id")
+    @Column(name = "role_id")
     private Long id;
     @Column(name = "role_name")
     private String name;
     @ManyToMany(mappedBy = "roles")
     private Set<User> users = new HashSet<>();
+
+    public Role() {
+    }
+
+    public Role(String name, Set<User> users) {
+        this.name = name;
+        this.users = users;
+    }
 
     public Long getId() {
         return id;
@@ -46,8 +54,6 @@ public class Role implements GrantedAuthority {
 
     public void setUsers(Set<User> users) {
         this.users = users;
-    }
-    public Role() {
     }
 
     @Override

@@ -22,7 +22,6 @@ public class UserController {
     public String showFormUser(Model model, Authentication authentication) {
         String name = authentication.getName();
         model.addAttribute("user", userService.findUserByName(name));
-
         return "user-no-editable-form";
     }
 }

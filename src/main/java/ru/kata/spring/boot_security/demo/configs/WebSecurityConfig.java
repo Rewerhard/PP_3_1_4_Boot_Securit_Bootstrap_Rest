@@ -20,20 +20,16 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private  UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
-    private  SuccessUserHandler successUserHandler;
+    private final SuccessUserHandler successUserHandler;
 
-   @Autowired
-    public WebSecurityConfig(@Qualifier("userDetailsServiceImpl")UserDetailsService userDetailsService, SuccessUserHandler successUserHandler) {
+    @Autowired
+    public WebSecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService, SuccessUserHandler successUserHandler) {
         this.userDetailsService = userDetailsService;
         this.successUserHandler = successUserHandler;
     }
 
-  /*  @Autowired
-    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    }*/
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
@@ -63,18 +59,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().accessDeniedPage("/access-denied");
     }
-
-    // аутентификация inMemory
-    /*@Bean
-    @Override
-    public UserDetailsService userDetailsService() {
-        UserDetails user =
-                User.withDefaultPasswordEncoder()
-                        .username("user")
-                        .password("user")
-                        .roles("USER")
-                        .build();
-
-        return new InMemoryUserDetailsManager(user);
-    }*/
 }

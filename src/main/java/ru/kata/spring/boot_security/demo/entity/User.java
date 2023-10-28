@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.entity;
 
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -16,6 +17,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,19 +30,23 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
-    //@NotBlank(message = "Имя не может быть пустым")
-    //@Size(min = 2, max = 30, message = "Имя от 2 до 30 символов")
+    @NotBlank(message = "Имя не может быть пустым")
+    @Size(min = 2, max = 30, message = "Имя от 2 до 30 символов")
     @Column(name = "user_name")
     private String name;
-   // @NotBlank(message = "Фамилия не может быть пустым")
-    //@Size(min = 2, max = 30, message = "Фамилия от 2 до 30 символов")
+    @NotBlank(message = "Фамилия не может быть пустым")
+    @Size(min = 2, max = 30, message = "Фамилия от 2 до 30 символов")
     @Column(name = "user_last_name")
     private String lastName;
-    //@Min(value = 0, message = "Возраст не может быть меньше 0")
+    @Min(value = 0, message = "Возраст не может быть меньше 0")
     @Column(name = "user_age")
     private int age;
+    @NotBlank(message = "Login не может быть пустым")
+    @Size(min = 2, max = 8, message = "Login от 2 до 8 символов")
     @Column(name = "user_user_name")
     private String userName;
+    @NotBlank(message = "Password не может быть пустым")
+   // @Min(value = 4,  message = "Password от 2 до 8 символов")
     @Column(name = "user_password")
     private String password;
     @ManyToMany
