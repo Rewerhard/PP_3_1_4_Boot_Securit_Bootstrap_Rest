@@ -22,20 +22,21 @@
         <!-- Add hidden form field to handle update -->
         <input type="hidden" th:field="*{id}" th:value="${user.id}"/>
 
-        <input type="text" th:field="*{userName}" class="form-control mb-4 col-4" placeholder="login">
-        <div style="color: red" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"> UserName error</div>
+        <input type="text" th:field="*{userName}" class="form-control  mb-1 col-4" placeholder="login">
+        <p style="color: red" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"> UserName error</p>
 
-        <input type="text" th:field="*{name}" class="form-control mb-4 col-4" placeholder="name">
-        <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> Name error</div>
 
-        <input type="text" th:field="*{lastName}" class="form-control mb-4 col-4" placeholder="Last name">
-        <div style="color: red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"> LastName error</div>
+        <input type="text" th:field="*{name}" class="form-control mb-1 col-4" placeholder="name">
+        <p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> Name error</p>
 
-        <input type="text" th:field="*{age}" class="form-control mb-4 col-4" placeholder="age">
-        <div style="color: red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"> Age error</div>
+        <input type="text" th:field="*{lastName}" class="form-control mb-1 col-4" placeholder="Last name">
+        <p style="color: red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"> LastName error</p>
 
-        <input type="password" th:field="*{password}" class="form-control mb-4 col-4" placeholder="password">
-        <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"> Password error</div>
+        <input type="text" th:field="*{age}" class="form-control mb-1 col-4" placeholder="age">
+        <p style="color: red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"> Age error</p>
+
+        <input type="password" th:field="*{password}" class="form-control mb-1 col-4" placeholder="password">
+        <p style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"> Password error</p>
 
         <label for="roles">User roles (multiple select):</label>
         <br/>

@@ -56,7 +56,6 @@ public class AdminController {
         }
         String encode = user.getPassword();        //new user
         passwordChanged(user, encode);
-        user.getRoles().clear();
         for (String r : roles) {
             user.addRole(roleService.getRole(Long.valueOf(r)));
         }
