@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" xmlns:th="http://www.thymeleaf.org">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <title> Login page </title>
+    <link href="signin.css" rel="stylesheet">
+</head>
+<body class="text-center">
+<form action="/login" class="dropdown w-25 p-5 mx-auto" th:method="POST">
+    <h1 class="h3 mb-3 fw-normal text-left"><strong> Please sign in</strong></h1>
+    <div class="form-group">
+        <input type="email" name="email" class="form-control" id="exampleDropdownFormEmail2"
+               placeholder="Email address">
+        <input type="password" name="password" class="form-control" id="exampleDropdownFormPassword2"
+               placeholder="Password">
+    </div>
+    <button type="submit" class="w-100 btn btn-lg btn-primary">Sign in</button>
+</form>
+</body>
+</html>
+
