@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,8 @@ import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -32,11 +35,39 @@ public class AdminController {
     }
 
     @GetMapping("/list")
-    public String showUserList(Model model) {
+    public String showUserList(Model model, Authentication authentication) {
+        User user = new User();
+        String email = authentication.getName();
+        User editUser = userService.findUserByEmail(email);
+        String roleString = editUser.getRoles().stream().map(role -> role.getName().replaceAll("ROLE_", ""))
+                .collect(Collectors.joining(" "));
+        model.addAttribute("user", user);
+        model.addAttribute("edit_user", editUser);
+        model.addAttribute("edit_roles", roleString);
         model.addAttribute("users", userService.getUsers());
+        model.addAttribute("roles", roleService.findAll());
         return "list-users";
     }
 
+   /* @GetMapping("/list")
+    public String listCustomers(Model theModel, Authentication authentication) {
+        List<User> theUsers = userService.getUsers();
+        theModel.addAttribute("users", theUsers);
+        User theUser = new User();
+        theModel.addAttribute("user", theUser);
+        theModel.addAttribute("roles", roleService.findAll());
+        String name = authentication.getName();
+        User principalUser = userService.getUserByName(name);
+        theModel.addAttribute("principal_user", principalUser);
+
+        String roleString = principalUser.getRoles().stream().map(role -> role.getName().replaceAll("ROLE_", ""))
+                .collect(Collectors.joining(" "));
+        theModel.addAttribute("principal_roles", roleString);
+        return "list_users_with_modal";
+    }
+*/
+
+/*
     @GetMapping("/showFormForAdd")
     public String showFormForAdd(Model model) {
         User user = new User();
@@ -44,8 +75,9 @@ public class AdminController {
         model.addAttribute("roles", roleService.findAll());
         return "user-form";
     }
+*/
 
-    @PostMapping("/saveUser")
+   /* @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute("user") @Valid User user, BindingResult result,
                            @RequestParam("roles") String[] roles, Model model) {
 
@@ -61,14 +93,34 @@ public class AdminController {
         }
         userService.add(user);
         return "redirect:/admin/list";
-    }
+    }*/
 
+    @PostMapping("/saveUser")
+    public String saveUser(@ModelAttribute("user") User user, @RequestParam("roles") String[] roles) {
+        String encode = user.getPassword();
+        if (user.getId() != 0) { // update user
+            if (encode.isEmpty()) { //  password not changed
+                user.setPassword(userService.getUserById(user.getId()).getPassword());
+            } else {
+                passwordChanged(user, encode);
+            }
+        } else { //new user
+            passwordChanged(user, encode);
+        }
+
+        user.getRoles().clear();
+        for (String r : roles) {
+            user.addRole(roleService.getRole(Long.valueOf(r)));
+        }
+        userService.add(user);
+        return "redirect:/admin/list";
+    }
     private void passwordChanged(User user, String encode) {
         encode = encoder.encode(encode);
         user.setPassword(encode);
     }
 
-    @GetMapping("/showFormForUpdate")
+   /* @GetMapping("/showFormForUpdate")
     public String showFormForUpdate(@RequestParam("userId") Long id, Model model) {
 
         User user = userService.getUserById(id);
@@ -97,7 +149,7 @@ public class AdminController {
         }
         userService.update(user);
         return "redirect:/admin/list";
-    }
+    }*/
 
     @PostMapping("/delete")
     public String deleteUser(@RequestParam("userId") Long id) {

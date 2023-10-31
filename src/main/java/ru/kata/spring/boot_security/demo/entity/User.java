@@ -14,40 +14,47 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "user_email")})
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
-    @NotBlank(message = "Поле не может быть пустым")
-    @Size(min = 2, max = 30, message = "От 2 до 30 символов")
+
+    //@NotBlank(message = "Поле не может быть пустым")
+    //@Size(min = 2, max = 30, message = "От 2 до 30 символов")
     @Column(name = "user_name")
     private String name;
-    @NotBlank(message = "Поле не может быть пустым")
-    @Size(min = 2, max = 30, message = "От 2 до 30 символов")
+
+    //@NotBlank(message = "Поле не может быть пустым")
+    //@Size(min = 2, max = 30, message = "От 2 до 30 символов")
     @Column(name = "user_last_name")
     private String lastName;
-    @Min(value = 0, message = "Поле не может быть меньше 0")
+
+    //@Min(value = 0, message = "Поле не может быть меньше 0")
     @Column(name = "user_age")
     private int age;
-    @NotBlank(message = "Login не может быть пустым")
-    @Size(min = 2, max = 8, message = "Login от 2 до 8 символов")
-    @Column(name = "user_user_name")
-    private String userName;
-    @NotBlank(message = "Password не может быть пустым")
+
+    //@Email
+    @Column(name = "user_email")
+    private String email;
+
+    //@NotBlank(message = "Password не может быть пустым")
     @Column(name = "user_password")
     private String password;
+
     @ManyToMany
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -89,12 +96,12 @@ public class User implements UserDetails {
         this.age = age;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -124,7 +131,7 @@ public class User implements UserDetails {
                 ", name='" + name + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +
-                ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", roles=" + roles +
                 '}';
@@ -137,7 +144,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return email;
     }
 
     @Override

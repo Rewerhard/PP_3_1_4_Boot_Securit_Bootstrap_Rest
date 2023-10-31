@@ -20,8 +20,8 @@ public class UserController {
 
     @GetMapping("/formUser")
     public String showFormUser(Model model, Authentication authentication) {
-        String name = authentication.getName();
-        model.addAttribute("user", userService.findUserByName(name));
+        String email = authentication.getName();
+        model.addAttribute("user", userService.findUserByEmail(email));
         return "user-no-editable-form";
     }
 }

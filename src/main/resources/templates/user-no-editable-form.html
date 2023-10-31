@@ -8,58 +8,108 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
-    <title>User property</title>
+    <title>User panel</title>
 </head>
 <body>
-<div class="container">
-
-    <h3>User Directory</h3>
-    <hr>
-
-    <p class="h4 mb-4">User data</p>
-
-    <form action="#" th:action="@{/admin/saveUser}"
-          th:object="${user}" method="POST">
-        <!-- Add hidden form field to handle update -->
-        <input type="hidden" th:field="*{id}"/>
-
-        <input type="text" th:field="*{userName} "
-               th:disabled="true"
-               class="form-control mb-4 col-4" placeholder="login">
-
-        <input type="text" th:field="*{name}"
-               th:disabled="true"
-               class="form-control mb-4 col-4" placeholder="First name">
-
-        <input type="text" th:field="*{lastName}"
-               th:disabled="true"
-               class="form-control mb-4 col-4" placeholder="Last name">
-
-        <input type="text" th:field="*{age}"
-               th:disabled="true"
-               class="form-control mb-4 col-4" placeholder="Email">
-
-        <label for="roles">User roles:</label>
-        <br/>
-        <select id="roles" required multiple="multiple" class="form-control mb-4 col-4" name="roles" th:disabled="true">
-
-            <option th:each="role : ${user.roles}"
-                    th:value="${{role.id}}"
-                    th:text="${role.name}"></option>
-        </select>
-
-    </form>
-
-    <hr>
-
-    <!-- Add a logout button -->
-    <form action="#" th:action="@{/logout}"
-          method="POST">
-
-        <input type="submit" value="Logout" class="btn btn-outline-primary mt-2"/>
-
-    </form>
-
+<!-- HEADER ROW -->
+<div class="row">
+    <div class="container-fluid">
+        <header class="p-3 mb-2 bg-dark text-white">
+            <div class="d-flex justify-content-between">
+                <!-- email with role -->
+                <div class=" mt-2">
+                    <span th:text="${#authentication.principal.email}"></span>
+                    <span>with roles:</span>
+                    <th:block th:each="r,authority : ${#authentication.getAuthorities()}">
+                    <span th:if="${r.getAuthority().startsWith('ROLE_')}"
+                          th:text="${r.getAuthority().replaceFirst('ROLE_', '')}"></span>
+                    </th:block>
+                </div>
+                <!-- logout -->
+                <div>
+                    <form action="#" th:action="@{/logout}"
+                          method="POST">
+                        <input type="submit" value="Logout" class="btn btn-outline-primary mt-2"/>
+                    </form>
+                </div>
+            </div>
+        </header>
+    </div>
 </div>
+<!-- user row-->
+<div class="container-fluid" style="min-height: 100vh;">
+    <div class="row">
+
+        <!-- user column-->
+        <div class="col-md-2" >
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-user-tab" data-toggle="tab" href="#user-panel" role="tab"
+                   aria-controls="v-pills-user" aria-selected="true">User</a>
+            </div>
+        </div>
+
+        <!-- info table block-->
+        <div class="col-md-10" style="min-height: 100vh;">
+            <div style="background-color: lightgray; min-height: 100vh;">
+            <!-- tab user-->
+            <div class="tab-pane fade show active " id="user-panel" role="tabpanel" aria-labelledby="user-panel-tab">
+                <div>
+                    <h2>User information-page</h2>
+                </div>
+
+                <!-- table user-->
+                <div class="container-fluid">
+                    <div class="card">
+                        <header class="card-header">
+                            <h4 class="card-title mt-2">About user</h4>
+                        </header>
+                        <div class="card-body">
+                            <table class="table table-striped">
+                                <thead class="light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Age</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${user.id}"/>
+                                    <td th:text="${user.name}"/>
+                                    <td th:text="${user.lastName}"/>
+                                    <td th:text="${user.age}"/>
+                                    <td th:text="${user.email}"/>
+                                    <td>
+                                        <th:block th:each="r,authority : ${#authentication.getAuthorities()}">
+                                      <span th:if="${r.getAuthority().startsWith('ROLE_')}"
+                                            th:text="${r.getAuthority().replaceFirst('ROLE_', '')}"></span>
+                                        </th:block>
+                                    </td>
+                                    <!-- <td th:text="${principal_roles}"/>-->
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+
 </body>
 </html>
