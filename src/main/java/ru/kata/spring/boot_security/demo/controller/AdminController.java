@@ -15,8 +15,6 @@ import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
-import javax.validation.Valid;
-import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -25,13 +23,12 @@ import java.util.stream.Collectors;
 public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
-    private final BCryptPasswordEncoder encoder;
+
 
     @Autowired
-    public AdminController(UserService userService, RoleService roleService, BCryptPasswordEncoder encoder) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
-        this.encoder = encoder;
     }
 
     @GetMapping("/list")
@@ -50,28 +47,19 @@ public class AdminController {
     }
 
     @PostMapping("/saveUser")
-    public String saveUser(@ModelAttribute("user") User user, @RequestParam("roles") String[] roles) {
+    public String saveUser(@ModelAttribute("user") User user) {
         String encode = user.getPassword();
         if (user.getId() == null) {
-            passwordChanged(user, encode);
+            userService.passwordChanged(user, encode);
         } else {
             if (encode.isEmpty()) { //  password not changed
                 user.setPassword(userService.getUserById(user.getId()).getPassword());
             } else {
-                passwordChanged(user, encode);
+                userService.passwordChanged(user, encode);
             }
-        }
-        user.getRoles().clear();
-        for (String r : roles) {
-            user.addRole(roleService.getRole(Long.valueOf(r)));
         }
         userService.add(user);
         return "redirect:/admin/list";
-    }
-
-    private void passwordChanged(User user, String encode) {
-        encode = encoder.encode(encode);
-        user.setPassword(encode);
     }
 
     @PostMapping("/delete")
