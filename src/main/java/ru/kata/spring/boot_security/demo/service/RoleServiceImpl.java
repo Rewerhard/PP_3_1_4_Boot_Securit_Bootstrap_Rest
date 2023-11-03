@@ -6,7 +6,8 @@ import ru.kata.spring.boot_security.demo.dao.RoleRepository;
 import ru.kata.spring.boot_security.demo.entity.Role;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Collection;
+
+import java.util.List;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -18,7 +19,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Collection<Role> findAll() {
+    public List<Role> findAll() {
         return roleRepository.findAll();
     }
 
