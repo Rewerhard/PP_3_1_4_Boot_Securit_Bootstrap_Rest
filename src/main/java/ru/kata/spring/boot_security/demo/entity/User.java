@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -37,6 +39,8 @@ public class User implements UserDetails {
     private String email;
     @Column(name = "user_password")
     private String password;
+
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -104,6 +108,17 @@ public class User implements UserDetails {
 
     public void addRole(Role role) {
         roles.add(role);
+    }
+    public Set<Role> getRolesFromJson() {
+        return roles;
+    }
+
+    @JsonProperty("roles")
+    public void setRolesFromJson(Set<Role> rolesJson) {
+        for (Role r:rolesJson
+        ) {
+            addRole(r);
+        };
     }
 
     @Override

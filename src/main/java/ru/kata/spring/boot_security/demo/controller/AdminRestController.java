@@ -21,7 +21,6 @@ public class AdminRestController {
     private final UserService userService;
     private final RoleService roleService;
 
-
     @Autowired
     public AdminRestController(UserService userService, RoleService roleService) {
         this.userService = userService;
@@ -46,7 +45,8 @@ public class AdminRestController {
 
     @PostMapping("/saveUser")
     public ResponseEntity<?> saveUser(@RequestBody User user) {
-        String encode = user.getPassword();
+
+        /*String encode = user.getPassword();
         if (user.getId() == null) {
             userService.passwordChanged(user, encode);
         } else {
@@ -55,13 +55,23 @@ public class AdminRestController {
             } else {
                 userService.passwordChanged(user, encode);
             }
+        }*/
+        String encode = user.getPassword();
+        if (user.getId() != 0) { // update user
+            if (encode.isEmpty()) { //  password not changed
+                user.setPassword(userService.getUserById(user.getId()).getPassword());
+            } else {
+                userService.passwordChanged(user, encode);
+            }
+        } else { //new user
+            userService.passwordChanged(user, encode);
         }
         userService.add(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
-    @PostMapping("/delete")
+    @PostMapping("/deleteUser")
     public ResponseEntity<?> deleteUser(@RequestBody User user) {
         userService.deleteUserById(user.getId());
         return new ResponseEntity<>(HttpStatus.OK);
