@@ -45,27 +45,6 @@ public class AdminRestController {
 
     @PostMapping("/saveUser")
     public ResponseEntity<?> saveUser(@RequestBody User user) {
-
-        /*String encode = user.getPassword();
-        if (user.getId() == null) {
-            userService.passwordChanged(user, encode);
-        } else {
-            if (encode.isEmpty()) {
-                user.setPassword(userService.getUserById(user.getId()).getPassword());
-            } else {
-                userService.passwordChanged(user, encode);
-            }
-        }*/
-        String encode = user.getPassword();
-        if (user.getId() != 0) { // update user
-            if (encode.isEmpty()) { //  password not changed
-                user.setPassword(userService.getUserById(user.getId()).getPassword());
-            } else {
-                userService.passwordChanged(user, encode);
-            }
-        } else { //new user
-            userService.passwordChanged(user, encode);
-        }
         userService.add(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }

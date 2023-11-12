@@ -33,6 +33,16 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void add(User user) {
+        String encode = user.getPassword();
+        if (user.getId() != 0) { // update user
+            if (encode.isEmpty()) { //  password not changed
+                user.setPassword(getUserById(user.getId()).getPassword());
+            } else {
+                passwordChanged(user, encode);
+            }
+        } else { //new user
+            passwordChanged(user, encode);
+        }
         userRepository.saveAndFlush(user);
     }
 
