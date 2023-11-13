@@ -266,16 +266,16 @@
                         <div class="p-2">
                             <label><strong>First name</strong></label>
                             <br/>
-                            <input type="text"
-                                   class="form-control" name="name" pattern="\w{3,16}" required
+                            <input type="text" name="name" pattern="\w{3,16}" required
+                                   class="form-control"
                                    placeholder="First name">
                         </div>
                         <!--lastname-->
                         <div class="p-2">
                             <label><strong>Last name</strong></label>
                             <br/>
-                            <input type="text"
-                                   class="form-control" name="lastName" pattern="\w{3,16}" required
+                            <input type="text" name="lastName" pattern="\w{3,16}" required
+                                   class="form-control"
                                    placeholder="Last name">
                         </div>
                         <!--age-->
@@ -416,6 +416,23 @@
                     <button type="button" id="button_delete_user" class="btn btn-danger ">Delete
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Error modal -->
+<div class="modal" id="modalerror">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Ooops, кажется что-то пошло не так :(</h4>
+            </div>
+            <div class="modal-body bg-warning">
+                <ul id="error-list"></ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="close-button" class="btn btn-info">Close</button>
             </div>
         </div>
     </div>

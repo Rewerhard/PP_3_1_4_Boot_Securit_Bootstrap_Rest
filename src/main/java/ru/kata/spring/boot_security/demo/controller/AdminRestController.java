@@ -13,6 +13,7 @@ import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -44,11 +45,10 @@ public class AdminRestController {
     }
 
     @PostMapping("/saveUser")
-    public ResponseEntity<?> saveUser(@RequestBody User user) {
+    public ResponseEntity<?> saveUser(@RequestBody @Valid User user) {
         userService.add(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 
     @PostMapping("/deleteUser")
     public ResponseEntity<?> deleteUser(@RequestBody User user) {

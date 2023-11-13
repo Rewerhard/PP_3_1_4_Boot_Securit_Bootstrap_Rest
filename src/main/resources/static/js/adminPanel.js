@@ -19,6 +19,7 @@ const url_save_user = '/adminAPI/saveUser';
 const url_delete_user = '/adminAPI/deleteUser';
 let url_user = '/userAPI/getCurrentUser';
 
+
 let adminAPI = function () {
 
     return {
@@ -46,7 +47,13 @@ let adminAPI = function () {
             if (response.ok) {
                 user_json = await response.json();
             } else {
-                alert("Ошибка HTTP: " + response.status);
+                response.json()
+                    .then(data => {
+                        displayErrors(data);
+                    })
+                    .catch(error => {
+                        console.error('Ошибка при получении пользователя:', error);
+                    });
             }
             return user_json;
         },
@@ -63,9 +70,14 @@ let adminAPI = function () {
             if (response.ok) {
                 await response;
             } else {
-                alert("Ошибка HTTP: " + response.status);
+                response.json()
+                    .then(data => {
+                        displayErrors(data);
+                    })
+                    .catch(error => {
+                        console.error('Ошибка при сохранении пользователя:', error);
+                    });
             }
-
         },
 
         deleteUser: async function (user) {
@@ -79,7 +91,13 @@ let adminAPI = function () {
             if (response.ok) {
                 await response;
             } else {
-                alert("Ошибка HTTP: " + response.status);
+                response.json()
+                    .then(data => {
+                        displayErrors(data);
+                    })
+                    .catch(error => {
+                        console.error('Ошибка при удалении пользователя:', error);
+                    });
             }
 
         }
@@ -282,3 +300,23 @@ $(function () {
 
     updateUsers();
 });
+
+function displayErrors(data) {
+    var errorList = document.getElementById('error-list');
+    errorList.innerHTML = '';
+
+    for (var fieldName in data) {
+        var errorMessage = data[fieldName];
+        var errorItem = document.createElement('li');
+        errorItem.textContent = fieldName + ': ' + errorMessage;
+        errorList.appendChild(errorItem);
+    }
+
+    var modal = document.getElementById('modalerror');
+    modal.style.display = 'block';
+
+    var closeButton = document.getElementById('close-button');
+    closeButton.addEventListener('click', function () {
+        modal.style.display = 'none';
+    });
+}
