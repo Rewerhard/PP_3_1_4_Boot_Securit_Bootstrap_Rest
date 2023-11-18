@@ -26,7 +26,7 @@ public class MyRestControllerAdvice {
         return errors;
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(EntityNotFoundException.class)
     public Map<String, String> handlerResourceNotFoundException(EntityNotFoundException ex) {
         Map<String, String> errors = new HashMap<>();

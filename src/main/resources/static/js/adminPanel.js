@@ -61,7 +61,7 @@ let adminAPI = function () {
 
         saveUser: async function (user) {
             let response = await fetch(url_save_user, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json;charset=utf-8'
                 },
@@ -82,7 +82,7 @@ let adminAPI = function () {
 
         deleteUser: async function (user) {
             let response = await fetch(url_delete_user, {
-                method: 'POST',
+                method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json;charset=utf-8'
                 },
@@ -186,7 +186,7 @@ $(function () {
         $('#newuser .form-control').each(function (index, element) {
             new_user[element.name] = element.value;
         });
-        new_user.id = 0;//поскольку новый , то id=0
+        //new_user.id = 0;//поскольку новый , то id=0
 
         //получаем массив выбранных ролей и добавляем их новому пользователю
         let userRolesSelect = $('#user_roles_new_user');
